@@ -1,249 +1,329 @@
-# 🧠 Multimodal Mild Cognitive Impairment Detection using EEG and Behavioral Cues
+<div align="center">
 
-A comprehensive **AI-driven diagnostic system** that integrates **EEG signals** and **behavioral analysis (video, audio, and speech)** to detect **Mild Cognitive Impairment (MCI)** and early stages of **Dementia**.
-This project leverages **EEG frequency band analysis**, **facial emotion recognition**, **audio feature extraction**, **speech-to-text linguistic metrics**, and a **weighted late-fusion model** for robust multimodal diagnosis.
+# 🧠 NeuroCognitiveAI
 
----
+### Multimodal Mild Cognitive Impairment Detection using EEG and Behavioral Signals
 
-## 📋 Table of Contents
+**An AI-driven diagnostic system that integrates EEG brain signals, facial behavior, speech, and audio cues to detect Mild Cognitive Impairment (MCI) and early-stage dementia.**
+*Combining neuroscience, machine learning, and multimodal AI for early cognitive disorder detection.*
 
-1. [Overview](#-overview)
-2. [Features](#-features)
-3. [System Architecture](#-system-architecture)
-4. [Dataset](#-dataset)
-5. [Installation](#-installation)
-6. [Project Structure](#-project-structure)
-7. [How It Works](#-how-it-works)
-8. [Model Details](#-model-details)
-9. [UI Overview](#-ui-overview)
-10. [Results & Observations](#-results--observations)
-11. [Future Scope](#-future-scope)
-12. [Contributors](#-contributors)
-13. [License](#-license)
+<br>
+
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge\&logo=python\&logoColor=white)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Interactive_UI-FF4B4B?style=for-the-badge\&logo=streamlit\&logoColor=white)](https://streamlit.io/)
+[![CatBoost](https://img.shields.io/badge/CatBoost-Gradient_Boosting-FFCC00?style=for-the-badge)](https://catboost.ai/)
+[![DeepFace](https://img.shields.io/badge/DeepFace-Facial_AI-blueviolet?style=for-the-badge)](https://github.com/serengil/deepface)
+[![Librosa](https://img.shields.io/badge/Librosa-Audio_Features-FF7F50?style=for-the-badge)](https://librosa.org/)
+[![Scikit-Learn](https://img.shields.io/badge/Scikit_Learn-ML_Model-F7931E?style=for-the-badge\&logo=scikitlearn)](https://scikit-learn.org/)
+[![MIT License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)]()
+
+</div>
 
 ---
 
-## 🧩 Overview
+# 📖 What is NeuroCognitiveAI?
 
-Cognitive impairments like **Mild Cognitive Impairment (MCI)** and **Dementia** affect millions globally.
-Early diagnosis is crucial — but traditional medical assessments are time-consuming and subjective.
+NeuroCognitiveAI is a **multimodal artificial intelligence system designed for early detection of Mild Cognitive Impairment (MCI) and dementia-related disorders**.
 
-Our **Multimodal Detection System** automates this process using:
+Traditional diagnosis of cognitive decline relies on **subjective cognitive tests and time-consuming neurological examinations**. This system automates cognitive evaluation by analyzing **brain activity, facial behavior, speech characteristics, and linguistic patterns**.
 
-* **EEG data** to analyze brain activity patterns
-* **Video + Audio** recordings for behavioral and speech-based cues
-* **Speech-to-Text** analysis for cognitive-linguistic patterns
+The system integrates three major modalities:
 
-The final system combines all three modalities through a **weighted late-fusion model** to produce a reliable diagnosis.
+* **EEG Brain Signals**
+* **Behavioral Visual & Audio Features**
+* **Speech-Linguistic Analysis**
 
----
-
-## 🚀 Features
-
-✅ **EEG Phase**
-
-* Extracts 5-band EEG frequency features (Delta, Theta, Alpha, Beta, Gamma) from `.set` files
-* Uses a trained **CatBoost model** to classify into *Healthy*, *Alzheimer’s*, or *Frontotemporal Dementia*
-
-✅ **Behavioral Phase**
-
-* Captures **facial emotion**, **audio**, and **speech** responses to 10 cognitive prompts
-* Extracts:
-
-  * **Visual features:** emotion + age estimation via `DeepFace`
-  * **Audio features:** MFCCs, pause counts, RMS energy via `Librosa`
-  * **Text features:** filler word ratio, word count, fluency metrics via `SpeechRecognition`
-
-✅ **Final Fusion Phase**
-
-* Performs **late fusion** across EEG, behavioral, and textual models
-* Weighted combination ensures EEG contributes higher diagnostic importance
-
-✅ **Interactive Streamlit Dashboard**
-
-* Real-time EEG upload and analysis
-* Video/audio capture and feature extraction
-* Final fusion visualization with interactive probability charts
+These modalities are combined using a **weighted late-fusion model**, producing a robust cognitive diagnosis.
 
 ---
 
-### 🧠 System Architecture
+# ✨ Features
+
+| Feature                                | Description                                             |
+| -------------------------------------- | ------------------------------------------------------- |
+| 🧠 **EEG Analysis**                    | Extracts Delta, Theta, Alpha, Beta, Gamma band features |
+| 🤖 **CatBoost EEG Model**              | Classifies brain signal patterns                        |
+| 🎥 **Facial Emotion Analysis**         | Detects facial emotions using DeepFace                  |
+| 🔊 **Audio Feature Extraction**        | MFCC, pause patterns, RMS energy                        |
+| 🗣 **Speech-to-Text Analysis**         | Extracts linguistic features from spoken responses      |
+| ⚖️ **Weighted Late Fusion Model**      | Combines EEG, behavioral, and textual predictions       |
+| 📊 **Interactive Streamlit Dashboard** | Visualizes results and probability distributions        |
+
+---
+
+# 🏗️ System Architecture
 
 ```mermaid
 graph TD
-A[EEG Data - .set files] --> B[EEG Feature Extractor]
+A[EEG Data - .set files] --> B[EEG Feature Extraction]
 B --> C[CatBoost EEG Model]
-C --> F[EEG Diagnosis]
+C --> D[EEG Prediction]
 
-D[Video Response] --> E[Audio Extraction - FFmpeg]
-E --> G[Audio Features - Librosa]
-D --> H[Visual Features - DeepFace]
-E --> I[Speech-to-Text - Google STT]
-I --> J[Text Features - Linguistic Metrics]
+E[Video Response] --> F[Audio Extraction - FFmpeg]
+F --> G[Audio Features - Librosa]
+E --> H[Visual Features - DeepFace]
+
+F --> I[Speech-to-Text - Google STT]
+I --> J[Linguistic Feature Extraction]
 
 G --> K[Behavioral Model - RandomForest]
 H --> K
 J --> L[Text Model - RandomForest]
-K --> M[Behavioral Prediction]
-L --> N[Text Prediction]
 
-F --> O[Weighted Late Fusion]
-M --> O
-N --> O
-O --> P[Final Cognitive Diagnosis - Healthy / MCI / Dementia]
+D --> M[Weighted Late Fusion]
+K --> M
+L --> M
+
+M --> N[Final Diagnosis: Healthy / MCI / Dementia]
 ```
 
 ---
 
-## 🧬 Dataset
+# 🧬 Dataset
 
-The EEG dataset used is publicly available on **OpenNeuro**:
+The EEG dataset used is publicly available on **OpenNeuro**.
+
 🔗 [https://openneuro.org/datasets/ds004504/versions/1.0.8](https://openneuro.org/datasets/ds004504/versions/1.0.8)
 
-* **Subjects:** 88
-* **Groups:** Healthy, Alzheimer’s Disease, Frontotemporal Dementia
-* **Data Type:** EEG recordings (EEGLAB `.set` format)
-* **Sampling Rate:** 512 Hz
+| Attribute     | Details                                               |
+| ------------- | ----------------------------------------------------- |
+| Subjects      | 88                                                    |
+| Groups        | Healthy, Alzheimer’s Disease, Frontotemporal Dementia |
+| Format        | EEGLAB `.set` files                                   |
+| Sampling Rate | 512 Hz                                                |
 
-Behavioral data (video/audio) was collected separately as part of cognitive testing simulations.
+Behavioral datasets were collected through simulated **cognitive interview prompts** with video and audio recordings.
 
 ---
 
-## ⚙️ Installation
+# 🛠️ Technology Stack
 
-### 🧩 Requirements
+### Core AI & ML
 
-Install all required dependencies using pip:
+| Component           | Technology               |
+| ------------------- | ------------------------ |
+| EEG Processing      | `MNE`                    |
+| EEG Model           | `CatBoost`               |
+| Behavioral Model    | `RandomForest`           |
+| Text Model          | `RandomForest`           |
+| Feature Engineering | `NumPy`, `Pandas`        |
+| Model Utilities     | `Scikit-learn`, `Joblib` |
+
+---
+
+### Behavioral & Signal Processing
+
+| Component          | Technology          |
+| ------------------ | ------------------- |
+| Facial Analysis    | `DeepFace`          |
+| Audio Features     | `Librosa`           |
+| Speech Recognition | `SpeechRecognition` |
+| Video Processing   | `OpenCV`            |
+| Audio Extraction   | `FFmpeg`            |
+
+---
+
+### Interface
+
+| Component     | Technology       |
+| ------------- | ---------------- |
+| UI Framework  | `Streamlit`      |
+| Visualization | Streamlit charts |
+
+---
+
+# 📂 Project Structure
+
+```text
+Multimodal-MCI-Detection/
+│
+├── final.py                     # Main Streamlit application
+├── eeg_feature_extractor.py     # EEG feature extraction pipeline
+├── eeg_model_check.ipynb        # Model experimentation notebook
+│
+├── features.csv                 # Extracted EEG features
+├── participants.tsv             # Subject labels
+├── catboost_eeg_model.cbm       # Trained EEG classifier
+│
+└── README.md
+```
+
+---
+
+# 🚀 Installation & Setup
+
+### Prerequisites
+
+* Python 3.10+
+* FFmpeg installed
+
+---
+
+## 1️⃣ Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-**Main Libraries:**
+Main libraries include:
 
-* `streamlit`
-* `mne`
-* `catboost`
-* `deepface`
-* `librosa`
-* `speechrecognition`
-* `opencv-python`
-* `joblib`
-* `numpy`, `pandas`, `scikit-learn`
-
-**System Dependencies:**
-
-* `ffmpeg` (for audio extraction from video)
-
-  * Windows: `choco install ffmpeg`
-  * Linux: `sudo apt install ffmpeg`
-  * macOS: `brew install ffmpeg`
+* streamlit
+* mne
+* catboost
+* deepface
+* librosa
+* speechrecognition
+* opencv-python
+* scikit-learn
+* pandas
+* numpy
 
 ---
 
-## 📁 Project Structure
+## 2️⃣ Install FFmpeg
 
+**Windows**
+
+```bash
+choco install ffmpeg
 ```
-📂 Multimodal-MCI-Detection
-│
-├── final.py                         # Main Streamlit application (EEG + Behavioral + Fusion)
-├── eeg_feature_extractor.py         # Extracts EEG band features from all electrodes
-├── eeg_model_check.ipynb            # Model experimentation and evaluation notebook
-│
-├── features.csv                     # Extracted EEG features for 88 subjects
-├── participants.tsv                 # Subject labels (Healthy, AD, FTD)
-├── catboost_eeg_model.cbm           # Trained EEG classifier model
-│
-└── README.md                        # You’re reading it 🙂
+
+**Linux**
+
+```bash
+sudo apt install ffmpeg
+```
+
+**macOS**
+
+```bash
+brew install ffmpeg
 ```
 
 ---
 
-## 🧩 How It Works
+# 🏃 Running the Application
 
-### 🧠 **Phase 1: EEG Analysis**
+Launch the Streamlit dashboard:
 
-1. EEG `.set` file is loaded using `mne`
-2. Bandpower computed for **5 EEG frequency bands** (Delta, Theta, Alpha, Beta, Gamma)
-3. Features flattened and passed to a **CatBoost classifier**
-4. Model predicts **Healthy / Alzheimer’s / FTD**
+```bash
+streamlit run final.py
+```
 
-### 🎥 **Phase 2: Behavioral Analysis**
+Access the interface at:
 
-1. Participant responds to 10 cognitive prompts via video
-2. `ffmpeg` extracts audio → processed by `librosa`
-3. `DeepFace` analyzes facial emotions and age
-4. `speech_recognition` converts speech → text → linguistic features
-5. `RandomForest` models trained for behavioral and text features
-
-### ⚖️ **Phase 3: Final Fusion**
-
-* Combines outputs of all three models
-* Weights are user-adjustable (EEG given more weight by default)
-* Outputs final probability across:
-
-  * **Healthy**
-  * **Mild Cognitive Impairment (MCI)**
-  * **Dementia**
+```
+http://localhost:8501
+```
 
 ---
 
-## 🧠 Model Details
+# ⚙️ How It Works
 
-| Model            | Input                            | Algorithm    | Output Classes            |
-| ---------------- | -------------------------------- | ------------ | ------------------------- |
-| EEG Model        | Bandpower features (88 subjects) | CatBoost     | Alzheimer’s, FTD, Healthy |
-| Behavioral Model | Visual + Audio                   | RandomForest | Healthy, MCI, Dementia    |
-| Text Model       | Transcribed speech features      | RandomForest | Healthy, MCI, Dementia    |
-| Fusion           | Weighted sum of 3 models         | Late Fusion  | Healthy, MCI, Dementia    |
+### 🧠 Phase 1 — EEG Analysis
 
----
+1. Upload EEG `.set` file
+2. Extract bandpower features for:
 
-## 🖥️ UI Overview
+* Delta
+* Theta
+* Alpha
+* Beta
+* Gamma
 
-**Developed using Streamlit**, featuring:
-
-* Sidebar navigation between modules
-* Real-time EEG upload and feature visualization
-* Video and audio upload interface
-* Live transcription and emotional analysis
-* Final result visualization with probability bars
+3. Features fed into **CatBoost classifier**
 
 ---
 
-## 📊 Results & Observations
+### 🎥 Phase 2 — Behavioral Analysis
 
-| Model           | Accuracy | F1 Score | ROC-AUC  |
-| --------------- | -------- | -------- | -------- |
-| EEG (CatBoost)  | ~89%     | 0.86     | 0.92     |
-| Behavioral (RF) | ~82%     | 0.80     | 0.87     |
-| Textual (RF)    | ~78%     | 0.76     | 0.84     |
-| Final Fusion    | **92%**  | **0.90** | **0.95** |
+Participant responds to cognitive prompts.
 
-> Fusion significantly improved stability and interpretability of results.
+Processing pipeline:
 
----
-
-## 🔮 Future Scope
-
-* Integrate **real-time EEG acquisition** via OpenBCI
-* Expand dataset to include **MCI**-specific EEG data
-* Replace hand-crafted features with **Deep Learning encoders**
-* Enable **cross-modal attention fusion** using transformers
-* Deploy as a **web-based clinical screening tool**
+* Video analyzed via **DeepFace**
+* Audio features extracted using **Librosa**
+* Speech converted to text using **Google STT**
+* Linguistic metrics computed
 
 ---
 
-## 🪪 License
+### ⚖️ Phase 3 — Multimodal Fusion
+
+Predictions from:
+
+* EEG model
+* Behavioral model
+* Text model
+
+are combined using **weighted late fusion**.
+
+Final probabilities generated for:
+
+* Healthy
+* Mild Cognitive Impairment
+* Dementia
+
+---
+
+# 📊 Results & Observations
+
+| Model            | Accuracy | F1 Score | ROC-AUC  |
+| ---------------- | -------- | -------- | -------- |
+| EEG (CatBoost)   | ~89%     | 0.86     | 0.92     |
+| Behavioral (RF)  | ~82%     | 0.80     | 0.87     |
+| Text (RF)        | ~78%     | 0.76     | 0.84     |
+| **Fusion Model** | **92%**  | **0.90** | **0.95** |
+
+The **multimodal fusion model significantly improved prediction stability and accuracy**.
+
+---
+
+# 🖥️ UI Overview
+
+The **Streamlit dashboard** includes:
+
+* EEG upload interface
+* Feature visualization
+* Video/audio upload
+* Real-time transcription
+* Emotion detection display
+* Probability bar charts for final diagnosis
+
+---
+
+# 🔮 Future Improvements
+
+* Integration with **OpenBCI real-time EEG acquisition**
+* Expand dataset for **MCI-specific EEG patterns**
+* Replace feature engineering with **deep neural encoders**
+* Implement **cross-modal attention transformers**
+* Deploy as a **clinical decision support tool**
+
+---
+
+# 👨‍💻 Contributors
+
+**Kishore P**
+CSE (AI & Robotics)
+VIT Chennai
+
+Collaborators:
+
+* Srinidhi Kalivemula
+* Amara Sree
+
+---
+
+# 📜 License
 
 This project is released under the **MIT License**.
-Feel free to use, modify, and cite with attribution.
 
 ---
 
-## 💬 Citation
+# 📚 Citation
 
-If you use this work in research or academic projects, please cite:
+If you use this work in academic research, please cite:
 
 ```
 P. Kishore et al.,
@@ -251,3 +331,16 @@ P. Kishore et al.,
 VIT Chennai, 2025.
 ```
 
+---
+
+<div align="center">
+
+<br>
+
+<i>Advancing early cognitive disorder detection through multimodal artificial intelligence.</i>
+
+<br><br>
+
+**NeuroCognitiveAI** — bridging neuroscience and AI diagnostics.
+
+</div>
