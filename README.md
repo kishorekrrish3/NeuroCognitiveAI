@@ -21,6 +21,9 @@
 
 ---
 
+> **Project status:** Academic research prototype, not a medical device or validated diagnostic system. EEG, speech, audio, and behavioral predictions must not be used to diagnose mild cognitive impairment or dementia or to guide care. Clinical evaluation and qualified professionals are required.
+
+
 # 📖 What is NeuroCognitiveAI?
 
 NeuroCognitiveAI is a **multimodal artificial intelligence system designed for early detection of Mild Cognitive Impairment (MCI) and dementia-related disorders**.
